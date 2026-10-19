@@ -21,10 +21,7 @@ The original starter page is kept at `/legacy/`.
 | 1 | Dhruvi Kotahri | 874294333 | dkk@csu.fullerton.edu |
 | 2 | Het Siddhapura | 826929101 | hetsiddhapura@csu.fullerton.edu |
 
-- GitHub repository: [GITHUB_REPO_URL]
-- Canvas submission: [CANVAS_SUBMISSION_LINK]
-- Demo slot: [DEMO_SLOT_TIME]
-
+- GitHub repository: [https://github.com/dhruvikothari/ZOMBIENEXUS.git]
 ## Implemented improvements
 
 1. Premium React front end (TypeScript, Vite, Tailwind, glass cards, responsive layout).
