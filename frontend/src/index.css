@@ -1,0 +1,199 @@
+@import "tailwindcss";
+
+/* static: emit every token as a CSS variable so SVG art and inline styles can use var(--color-*). */
+@theme static {
+  --color-bg: #0b0d10;
+  --color-panel: #12151a;
+  --color-panel-2: #181c23;
+  --color-raised: #1f242d;
+  --color-line: #262c36;
+  --color-line-strong: #353d4a;
+  --color-fg: #e8ecf1;
+  --color-fg-muted: #9aa4b2;
+  --color-fg-faint: #6b7482;
+  --color-on-accent: #0b0d10;
+  --color-green: #39ff88;
+  --color-green-dim: #1fa85a;
+  --color-green-glow: rgb(57 255 136 / 0.35);
+  --color-purple: #8e7cc3;
+  --color-purple-dim: #4b3f78;
+  --color-gold: #f2c14e;
+  --color-gold-dim: #8a6a1f;
+  --color-danger: #ff5c6c;
+  --color-warning: #ffb547;
+  --color-info: #5cc8ff;
+  --color-success: #39ff88;
+
+  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, monospace;
+
+  --text-display: 3rem;
+  --text-display--line-height: 1.08;
+  --text-h1: 2rem;
+  --text-h1--line-height: 1.2;
+  --text-h2: 1.5rem;
+  --text-h2--line-height: 1.25;
+  --text-h3: 1.125rem;
+  --text-h3--line-height: 1.35;
+  --text-body: 0.9375rem;
+  --text-body--line-height: 1.5;
+  --text-label: 0.75rem;
+  --text-label--line-height: 1.2;
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
+  --radius-2xl: 28px;
+
+  --shadow-card: 0 1px 0 rgb(255 255 255 / 0.04) inset, 0 12px 32px rgb(0 0 0 / 0.45);
+  --shadow-glow-green: 0 0 0 1px rgb(57 255 136 / 0.5), 0 0 24px rgb(57 255 136 / 0.25);
+  --shadow-glow-gold: 0 0 0 1px rgb(242 193 78 / 0.6), 0 0 28px rgb(242 193 78 / 0.3);
+  --shadow-glow-purple: 0 0 0 1px rgb(142 124 195 / 0.6), 0 0 28px rgb(142 124 195 / 0.3);
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+
+  --animate-float: float 6s var(--ease-in-out) infinite;
+  --animate-shimmer: shimmer 2.4s linear infinite;
+  --animate-pulse-glow: pulse-glow 2.8s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.55; filter: drop-shadow(0 0 4px var(--color-green-glow)); }
+  50% { opacity: 1; filter: drop-shadow(0 0 14px var(--color-green-glow)); }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes modal-in {
+  from { opacity: 0; transform: translateY(12px) scale(0.97); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes toast-progress {
+  from { transform: scaleX(1); }
+  to { transform: scaleX(0); }
+}
+
+@keyframes spin-slow {
+  to { transform: rotate(360deg); }
+}
+
+@layer base {
+  html {
+    background: var(--color-bg);
+    color-scheme: dark;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background: var(--color-bg);
+    color: var(--color-fg);
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    line-height: var(--text-body--line-height);
+    -webkit-font-smoothing: antialiased;
+    min-height: 100dvh;
+  }
+
+  /* Fixed film grain; below the app (z-index 0) so it never blocks or tints overlays. */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.04;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  #root {
+    position: relative;
+    z-index: 1;
+  }
+
+  ::selection {
+    background: var(--color-green-glow);
+    color: var(--color-fg);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-green);
+    outline-offset: 2px;
+  }
+
+  body:has(dialog[open]) {
+    overflow: hidden;
+  }
+
+  dialog::backdrop {
+    background: rgb(5 7 9 / 0.7);
+    backdrop-filter: blur(4px);
+    animation: fade-in 200ms var(--ease-out-expo);
+  }
+
+  dialog[open] {
+    animation: modal-in 200ms var(--ease-out-expo);
+  }
+}
+
+@layer components {
+  .glass {
+    background: color-mix(in oklab, var(--color-panel) 78%, transparent);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-card);
+  }
+
+  .glass-interactive {
+    transition:
+      transform 200ms var(--ease-out-expo),
+      box-shadow 200ms var(--ease-out-expo),
+      border-color 200ms var(--ease-out-expo);
+  }
+
+  .glass-interactive:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-glow-green);
+    border-color: transparent;
+  }
+
+  .skeleton {
+    background-color: var(--color-raised);
+    background-image: linear-gradient(90deg, var(--color-raised) 0%, var(--color-line) 50%, var(--color-raised) 100%);
+    background-size: 200% 100%;
+    animation: var(--animate-shimmer);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    animation-delay: 0ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .glass-interactive:hover {
+    transform: none;
+  }
+}
